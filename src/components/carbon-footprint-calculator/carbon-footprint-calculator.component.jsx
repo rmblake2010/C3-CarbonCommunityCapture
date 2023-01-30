@@ -1,4 +1,4 @@
-const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint }) => {
+const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint, incrementCalcIndex }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCarbonFootprint({ ...carbonFootprint, [name]: value });
@@ -30,8 +30,9 @@ const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint }) => {
 
     //Calculating total emissions
     const totalEmissions =
-      eletricEmissions + heatingEmissions + vehicleEmissions;
-    setCarbonFootprint({ carbonFootprint, result: totalEmissions });
+      eletricEmissions + heatingEmissions + vehicleEmissions
+    setCarbonFootprint({ carbonFootprint, result: Math.ceil(totalEmissions) });
+    incrementCalcIndex()
   };
 
   return (
@@ -84,11 +85,6 @@ const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint }) => {
           </button>
         </div>
       </form>
-      {carbonFootprint.result ? (
-        <h2>{`Your carbon footprint is ${carbonFootprint.result} lbs of C02 per year.`}</h2>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

@@ -1,9 +1,64 @@
-const TreeSequestrationCalculator = () => {
+/*
+Tree Questions
+How many trees?
+Forms built based on how many trees
+Type of tree
+Specs of tree:
+Weight Above ground (lbs) = .25(Diameter^2 * Height)
+Total Green Weight(lbs) = 1.2 * Weight above Ground
+Dry weight(lbs) = .725 * total green weight = 
+Carbon Weight(lbs) = .05 * dry weight = .5 * 343
+CO2 Sequestered = 3.67 * Carbon Weight
+*/
+
+const TreeSequestrationCalculator = ({treeSequestration, setTreeSequestration, incrementCalcIndex}) => {
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTreeSequestration({ ...treeSequestration, [name]: value });
+  };
+
+  
+  const calcTreeSequestration = async (e) => {
+    e.preventDefault()
+    const { diameter, height } = treeSequestration
+
+    const weightAboveGround = .25 * (Math.pow(diameter, 2) * height)
+    const totalGreenWeight = 1.2 * weightAboveGround
+    const dryWeight = .725 * totalGreenWeight
+    const carbonWeight = .725 * totalGreenWeight
+    const carbonDioxideSequestered = Math.ceil(3.67 * carbonWeight)
+
+    setTimeout(() => {
+    setTreeSequestration({ ...treeSequestration, 
+      weightAboveGround: weightAboveGround,
+      totalGreenWeight: totalGreenWeight,
+      dryWeight: dryWeight,
+      carbonWeight: carbonWeight,
+      co2Sequestered: carbonDioxideSequestered,
+  })
+},500)
+  
+   // incrementCalcIndex()
+  }
+  
+  const treeSpecificationsCalculation = (diameter, height) => {
+    
+    const weightAboveGround = .25 * (Math.pow(diameter, 2) * height)
+    const totalGreenWeight = 1.2 * weightAboveGround
+    const dryWeight = .725 * totalGreenWeight
+    const carbonWeight = .725 * totalGreenWeight
+    const carbonDioxideSequestered = 3.67 * carbonWeight
+
+    return (weightAboveGround, totalGreenWeight, dryWeight, carbonWeight, carbonDioxideSequestered)
+  }
+  
   return (
     <div className="m-auto">
       <form className="flex flex-col">
         <label>Tree Species</label>
-        <select name="species">
+        <select onChange={handleChange} name="species" className="bg-gray-200 rounded-sm">
+          <option>---Select a tree---</option>
           <option>Oak</option>
           <option>Maple</option>
           <option>Birch</option>
@@ -14,10 +69,11 @@ const TreeSequestrationCalculator = () => {
         </select>
 
         <label>Diameter (in)</label>
-        <input className="bg-gray-200 rounded-sm" name="diameter"></input>
+        <input onChange={handleChange} className="bg-gray-200 rounded-sm" name="diameter"></input>
 
         <label>Height (ft)</label>
-        <input className="bg-gray-200 rounded-sm" name="height"></input>
+        <input onChange={handleChange} className="bg-gray-200 rounded-sm" name="height"></input>
+        <button onClick={calcTreeSequestration}>Submit</button>
       </form>
     </div>
   );

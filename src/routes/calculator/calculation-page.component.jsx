@@ -41,8 +41,10 @@ const treeSequestrationTemplate = [{
     totalGreenWeight: 0,
     dryWeight: 0,
     carbonWeight: 0,
-    co2Sequestered: 0,
+    co2Sequestered: null,
 }]
+
+
 
 
 // Set up a state to handle switching forms on this page
@@ -50,19 +52,73 @@ const treeSequestrationTemplate = [{
 
 const CalculationPage = () => {
   let [carbonFootprint, setCarbonFootprint] = useState(carbonFootprintTemplate);
-  let [treeSequestration, setTreeSequestration] = useState(treeSequestrationTemplate)
+  let [treeSequestration, setTreeSequestration] = useState([])
+    // Indexing calculator components
+  const [calcIndex, setCalcIndex] = useState(0)
+
+  const incrementCalcIndex = () => {
+    setCalcIndex(calcIndex+1)
+  }
+
+  const decrementCalcIndex = () => {
+    setCalcIndex(calcIndex-1)
+  }
+  
+  
+  
+  const calcComponents = [
+    <CarbonFootprintCalculator carbonFootprint={carbonFootprint} setCarbonFootprint={setCarbonFootprint} incrementCalcIndex={incrementCalcIndex}/>,
+    <TreeSequestrationCalculator treeSequestration={treeSequestration} setTreeSequestration={setTreeSequestration} incrementCalcIndex={incrementCalcIndex}/>
+    ]
+  
+  const renderCarbonNeutral = (carbonFootprint, treeSpecs) => {
+    const carbonNeutrality = carbonFootprint - treeSpecs
+
+    if(carbonFootprint <= treeSpecs){
+      return(
+        <p>{` You are carbon neutral!~ You offset ${Math.abs(carbonNeutrality)} lbs of CO2 annually. Good Job!`}</p>
+        
+      )
+    } else{
+      return(
+        <p>{`you are not carbon neutral, your net release of CO2 is ${carbonNeutrality} lbs annually`}</p>
+      )
+    }
+  }
+
+
 
   const handleTreeAmount = () => {
     console.log('hello')
   }
 
   return (
-    <div className="flex justify-around">
-      <div className="container max-w-md border-2 border-red-400">
-        <CarbonFootprintCalculator
-          carbonFootprint={carbonFootprint}
-          setCarbonFootprint={setCarbonFootprint}
-        />
+    <div className="flex justify-around min-h-screen">
+      <div className="container m-auto max-w-md border-2 border-red-400">
+          {calcComponents[calcIndex]}
+          <div className="flex justify-around">
+            <button onClick={decrementCalcIndex}>Back</button>
+            <button onClick={incrementCalcIndex}>Next</button>
+          </div>
+      </div>
+      <div className="container m-auto max-w-md border-2 border-red-400">
+        <h1>Results:</h1>
+        <hr></hr>
+        {carbonFootprint.result ? 
+        `Carbon Footprint: ${carbonFootprint.result} lbs of CO2 per year`
+      : <></>}
+      <hr></hr>
+      {treeSequestration.co2Sequestered ?
+      `Your ${treeSequestration.species} has sequestered ${treeSequestration.co2Sequestered} lbs of CO2!`
+        :
+        <></>}
+        <hr></hr>
+      {treeSequestration.co2Sequestered && carbonFootprint.result ? 
+        renderCarbonNeutral(carbonFootprint.result, treeSequestration.co2Sequestered)
+     : <></>
+    }
+    
+
       </div>
 
 
