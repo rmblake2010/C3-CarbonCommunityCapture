@@ -1,4 +1,12 @@
-const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint, incrementCalcIndex }) => {
+import { useContext } from "react";
+import { CarbonFootprintContext } from "../../context/carbon-footprint.context";
+
+const CarbonFootprintCalculator = ({
+
+  incrementCalcIndex,
+}) => {
+  const {carbonFootprint, setCarbonFootprint } = useContext(CarbonFootprintContext)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCarbonFootprint({ ...carbonFootprint, [name]: value });
@@ -30,9 +38,9 @@ const CarbonFootprintCalculator = ({ carbonFootprint, setCarbonFootprint, increm
 
     //Calculating total emissions
     const totalEmissions =
-      eletricEmissions + heatingEmissions + vehicleEmissions
+      eletricEmissions + heatingEmissions + vehicleEmissions;
     setCarbonFootprint({ carbonFootprint, result: Math.ceil(totalEmissions) });
-    incrementCalcIndex()
+    incrementCalcIndex();
   };
 
   return (
