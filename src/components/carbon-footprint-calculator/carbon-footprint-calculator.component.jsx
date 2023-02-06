@@ -29,9 +29,9 @@ const CarbonFootprintCalculator = ({
     const { electricCost, heatingCost, vehicleMPG, milesTraveledPerYear } =
       carbonFootprint;
 
-    // Assume that the average emissions factor for electricity is 0.5 pounds CO2 per KWH
+    // Assume that the average emissions factor for electricity is 0.5 pounds CO2 per KWH PG&E
     const eletricEmissions = electricCost * 0.5;
-    // Assume that the average emissions factor for natural gas is 12 pounds CO2 per CCF
+    // Assume that the average emissions factor for natural gas is 12 pounds CO2 per CCF   
     const heatingEmissions = heatingCost * 12;
     // Assume that the average emissions factor for gasoline is 19.6 pounds CO2 per gallon
     const vehicleEmissions = (milesTraveledPerYear / vehicleMPG) * 19.6;
